@@ -1,0 +1,74 @@
+﻿@model Negocio.Objetos.Habitacion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Habitacion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.num_habi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.num_habi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.desc_habi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.desc_habi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.precio_habi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precio_habi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cat_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cat_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.id_piso)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.id_piso)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.img_habi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.img_habi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.estado_habi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.estado_habi)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

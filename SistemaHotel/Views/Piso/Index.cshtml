@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Negocio.Objetos.Piso>
+
+@{
+    ViewBag.Title = "PISO";
+}
+
+<h2>PISO</h2>
+<p>
+    <button type="button" data-toggle="modal" class="btn btn-primary modalcreate" data-url='@Url.Action("Create","Piso")'><i class="fas fa-plus"></i> Add New</button>
+</p>
+
+<table class="table table-hover table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.id_piso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.desc_piso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.estado_piso)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            @{
+                Dominio.MainModule.StateManager statem = new Dominio.MainModule.StateManager();
+                var e = statem.ListaState.ToList().Where(x => x.valor == item.estado_piso).FirstOrDefault();
+                var clase = "";
+                switch (e.valor)
+                {
+                    case "0": clase = "class=text-danger"; break;
+                    case "1": clase = "class=text-success"; break;
+                    default: clase = "class=text-warning"; break;
+                }
+
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.id_piso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.desc_piso)
+            </td>
+            <td @clase>
+                @e.nombre
+            </td>
+            <td>
+                <button type="button" data-toggle="modal" class="btn btn-secondary modaledit" data-url='@Url.Action("Edit","Piso", new { id = item.id_piso })'><i class="fas fa-edit"></i>Edit</button> |
+                <a class="btn btn-danger" href='@Url.Action("Delete","Piso",new { id = item.id_piso })'><i class="fas fa-trash"></i>Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="modal fade" id="myModal" role="dialog" data-backdrop="static"></div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".modalcreate").click(function () {
+                let url = $(this).data("url");
+                $.get(url, function (data) {
+                    $("#myModal").html(data);
+                    $("#myModal").modal();
+                    });
+            });
+
+            $(".modaledit").click(function () {
+                let url = $(this).data("url");
+                $.get(url, function (data) {
+                    $("#myModal").html(data);
+                    $("#myModal").modal();
+                });
+            });
+
+
+            })
+
+    </script>
+
+}
