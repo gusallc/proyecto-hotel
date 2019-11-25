@@ -1,0 +1,118 @@
+﻿@model Negocio.Objetos.Reserva
+
+<h2>Carrito de Compras</h2>
+<div class="container">
+
+    <div class="row">
+        <div class="form-group col-md col-lg-2">
+           <label class="control-label col-md-2">Ingreso</label>
+           <div>
+               <input class="form-control text-box single-line dtpInicio " type="datetime" id="fechaini" />
+           </div>
+        </div>
+
+        <div class="form-group col-md col-lg-2">
+            <label class="control-label col-md-2">Salida</label>
+            <div>
+                <input class="form-control text-box single-line dtpFin " type="datetime" id="fechafin" />
+            </div>
+        </div>
+
+        <div class="form-group col-md col-lg-2">
+            <label class="control-label col-md-2">Personas</label>
+            <div>
+                <input class="form-control text-box single-line" type="number" id="personas" />
+            </div>
+        </div>
+
+        <div class="form-group col-md col-lg-4">
+            <label class="control-label col-md-2">Cliente</label>
+            <div>
+                @Html.DropDownList("dni_clientes", null, htmlAttributes: new { @class = "form-control"})
+            </div>
+        </div>
+
+        <div class="form-group col-md-2 col-lg-2">
+            <label class="control-label col-md-2">Pago</label>
+            <div>
+              <input class="form-control text-box single-line" type="number" id="estadopago" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Nº de Piso</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            double total = 0;
+        }
+        @if (Session["carrito"] != null)
+        {
+            foreach (var item in Session["carrito"] as List<Negocio.Objetos.ItemCarrito>)
+            {
+                var desc_cat =
+                total += (double)(item.habitacion.precio_habi);
+                <tr>
+                    <td>@item.habitacion.desc_habi</td>
+                    <td>@String.Format("{0:C}", @item.habitacion.precio_habi)</td>
+                    <td>@item.habitacion.cat_id</td>
+                    <td>@item.habitacion.id_piso</td>
+                    <td>
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.habitacion.num_habi }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="4">Total</th>
+            <th>@String.Format("{0:C}", total)</th>
+        </tr>
+    </tfoot>
+</table>
+<div>
+    @Html.ActionLink("Atras", "Available", "Habitacion", null, new { @class = "btn btn-danger" })
+    <a class="btn btn-success" id="confirmar" href="#">Pagar</a>
+</div>
+
+
+@section scripts{
+    <script>
+        $("#confirmar").click(function (event) {
+            event.preventDefault();
+            let a = $("#fechaini").val();
+            let b = $("#fechafin").val();
+            let c = $("#personas").val();
+            let d = $("#dni_clientes").val();
+            let e = $("#estadopago").val();
+
+           $.ajax({
+                 url: "@Url.Action("ConfirmReserva", "Home")",
+               data: { fecha_ingreso: a, fecha_salida: b, cant_personas: c, dni_clientes: d,estado_pago:e },
+                type: "POST",
+                success: function (response) {
+                    window.location.href = "@Url.Action("ConfirmReserva", "Home")";
+                },
+                error: function (xhr, error) {
+                    alert(error);
+                }
+        });  
+
+        })
+
+
+    </script>
+
+}

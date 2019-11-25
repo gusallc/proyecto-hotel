@@ -1,0 +1,475 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dbhotelModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="categoria_habitacion">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="desc_cat" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="estado_cat" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="clientes">
+          <Key>
+            <PropertyRef Name="dni_clientes" />
+          </Key>
+          <Property Name="dni_clientes" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="apenom_cli" Type="varchar" MaxLength="255" />
+          <Property Name="edad_cli" Type="int" />
+          <Property Name="dni_usu" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="estado_cli" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="detalle_reserva">
+          <Key>
+            <PropertyRef Name="idDetReserva" />
+          </Key>
+          <Property Name="idDetReserva" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fk_num_habi" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="fk_id_reserva" Type="int" Nullable="false" />
+          <Property Name="estado_det" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="habitacion">
+          <Key>
+            <PropertyRef Name="num_habi" />
+          </Key>
+          <Property Name="num_habi" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="desc_habi" Type="varchar(max)" Nullable="false" />
+          <Property Name="precio_habi" Type="money" Nullable="false" />
+          <Property Name="cat_id" Type="int" Nullable="false" />
+          <Property Name="id_piso" Type="int" Nullable="false" />
+          <Property Name="img_habi" Type="varchar(max)" />
+          <Property Name="estado_habi" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="piso">
+          <Key>
+            <PropertyRef Name="id_piso" />
+          </Key>
+          <Property Name="id_piso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="desc_piso" Type="varchar" MaxLength="65" Nullable="false" />
+          <Property Name="estado_piso" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reserva">
+          <Key>
+            <PropertyRef Name="res_id" />
+          </Key>
+          <Property Name="res_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha_ingreso" Type="datetime" Nullable="false" />
+          <Property Name="fecha_salida" Type="datetime" Nullable="false" />
+          <Property Name="cant_personas" Type="int" Nullable="false" />
+          <Property Name="dni_clientes" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="estado_pago" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="dni_usu" />
+          </Key>
+          <Property Name="dni_usu" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="apenom_usu" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="password_usu" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="direccion_usu" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="estado_usu" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_cliente_usu">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="clientes" Type="Self.clientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="dni_usu" />
+            </Principal>
+            <Dependent Role="clientes">
+              <PropertyRef Name="dni_usu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_detalle_reserva_habitacion">
+          <End Role="habitacion" Type="Self.habitacion" Multiplicity="1" />
+          <End Role="detalle_reserva" Type="Self.detalle_reserva" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="habitacion">
+              <PropertyRef Name="num_habi" />
+            </Principal>
+            <Dependent Role="detalle_reserva">
+              <PropertyRef Name="fk_num_habi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_detalle_reserva_reserva">
+          <End Role="reserva" Type="Self.reserva" Multiplicity="1" />
+          <End Role="detalle_reserva" Type="Self.detalle_reserva" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reserva">
+              <PropertyRef Name="res_id" />
+            </Principal>
+            <Dependent Role="detalle_reserva">
+              <PropertyRef Name="fk_id_reserva" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_habi_cat_habi">
+          <End Role="categoria_habitacion" Type="Self.categoria_habitacion" Multiplicity="1" />
+          <End Role="habitacion" Type="Self.habitacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categoria_habitacion">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="habitacion">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_habi_piso">
+          <End Role="piso" Type="Self.piso" Multiplicity="1" />
+          <End Role="habitacion" Type="Self.habitacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="piso">
+              <PropertyRef Name="id_piso" />
+            </Principal>
+            <Dependent Role="habitacion">
+              <PropertyRef Name="id_piso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_res_cli">
+          <End Role="clientes" Type="Self.clientes" Multiplicity="1" />
+          <End Role="reserva" Type="Self.reserva" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientes">
+              <PropertyRef Name="dni_clientes" />
+            </Principal>
+            <Dependent Role="reserva">
+              <PropertyRef Name="dni_clientes" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbhotelModelStoreContainer">
+          <EntitySet Name="categoria_habitacion" EntityType="Self.categoria_habitacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="clientes" EntityType="Self.clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalle_reserva" EntityType="Self.detalle_reserva" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="habitacion" EntityType="Self.habitacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="piso" EntityType="Self.piso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reserva" EntityType="Self.reserva" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_cliente_usu" Association="Self.fk_cliente_usu">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="clientes" EntitySet="clientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_detalle_reserva_habitacion" Association="Self.FK_detalle_reserva_habitacion">
+            <End Role="habitacion" EntitySet="habitacion" />
+            <End Role="detalle_reserva" EntitySet="detalle_reserva" />
+          </AssociationSet>
+          <AssociationSet Name="FK_detalle_reserva_reserva" Association="Self.FK_detalle_reserva_reserva">
+            <End Role="reserva" EntitySet="reserva" />
+            <End Role="detalle_reserva" EntitySet="detalle_reserva" />
+          </AssociationSet>
+          <AssociationSet Name="fk_habi_cat_habi" Association="Self.fk_habi_cat_habi">
+            <End Role="categoria_habitacion" EntitySet="categoria_habitacion" />
+            <End Role="habitacion" EntitySet="habitacion" />
+          </AssociationSet>
+          <AssociationSet Name="fk_habi_piso" Association="Self.fk_habi_piso">
+            <End Role="piso" EntitySet="piso" />
+            <End Role="habitacion" EntitySet="habitacion" />
+          </AssociationSet>
+          <AssociationSet Name="fk_res_cli" Association="Self.fk_res_cli">
+            <End Role="clientes" EntitySet="clientes" />
+            <End Role="reserva" EntitySet="reserva" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbhotelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="categoria_habitacion">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="desc_cat" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado_cat" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="habitacion" Relationship="Self.fk_habi_cat_habi" FromRole="categoria_habitacion" ToRole="habitacion" />
+        </EntityType>
+        <EntityType Name="clientes">
+          <Key>
+            <PropertyRef Name="dni_clientes" />
+          </Key>
+          <Property Name="dni_clientes" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apenom_cli" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="edad_cli" Type="Int32" />
+          <Property Name="dni_usu" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado_cli" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="usuario" Relationship="Self.fk_cliente_usu" FromRole="clientes" ToRole="usuario" />
+          <NavigationProperty Name="reserva" Relationship="Self.fk_res_cli" FromRole="clientes" ToRole="reserva" />
+        </EntityType>
+        <EntityType Name="detalle_reserva">
+          <Key>
+            <PropertyRef Name="idDetReserva" />
+          </Key>
+          <Property Name="idDetReserva" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fk_num_habi" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="fk_id_reserva" Type="Int32" Nullable="false" />
+          <Property Name="estado_det" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="habitacion" Relationship="Self.FK_detalle_reserva_habitacion" FromRole="detalle_reserva" ToRole="habitacion" />
+          <NavigationProperty Name="reserva" Relationship="Self.FK_detalle_reserva_reserva" FromRole="detalle_reserva" ToRole="reserva" />
+        </EntityType>
+        <EntityType Name="habitacion">
+          <Key>
+            <PropertyRef Name="num_habi" />
+          </Key>
+          <Property Name="num_habi" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="desc_habi" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="precio_habi" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="cat_id" Type="Int32" Nullable="false" />
+          <Property Name="id_piso" Type="Int32" Nullable="false" />
+          <Property Name="img_habi" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="estado_habi" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="categoria_habitacion" Relationship="Self.fk_habi_cat_habi" FromRole="habitacion" ToRole="categoria_habitacion" />
+          <NavigationProperty Name="detalle_reserva" Relationship="Self.FK_detalle_reserva_habitacion" FromRole="habitacion" ToRole="detalle_reserva" />
+          <NavigationProperty Name="piso" Relationship="Self.fk_habi_piso" FromRole="habitacion" ToRole="piso" />
+        </EntityType>
+        <EntityType Name="piso">
+          <Key>
+            <PropertyRef Name="id_piso" />
+          </Key>
+          <Property Name="id_piso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="desc_piso" Type="String" MaxLength="65" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado_piso" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="habitacion" Relationship="Self.fk_habi_piso" FromRole="piso" ToRole="habitacion" />
+        </EntityType>
+        <EntityType Name="reserva">
+          <Key>
+            <PropertyRef Name="res_id" />
+          </Key>
+          <Property Name="res_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha_ingreso" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="fecha_salida" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="cant_personas" Type="Int32" Nullable="false" />
+          <Property Name="dni_clientes" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado_pago" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="clientes" Relationship="Self.fk_res_cli" FromRole="reserva" ToRole="clientes" />
+          <NavigationProperty Name="detalle_reserva" Relationship="Self.FK_detalle_reserva_reserva" FromRole="reserva" ToRole="detalle_reserva" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="dni_usu" />
+          </Key>
+          <Property Name="dni_usu" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apenom_usu" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password_usu" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="direccion_usu" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado_usu" Type="String" Nullable="false" />
+          <NavigationProperty Name="clientes" Relationship="Self.fk_cliente_usu" FromRole="usuario" ToRole="clientes" />
+        </EntityType>
+        <Association Name="fk_habi_cat_habi">
+          <End Role="categoria_habitacion" Type="Self.categoria_habitacion" Multiplicity="1" />
+          <End Role="habitacion" Type="Self.habitacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categoria_habitacion">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="habitacion">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cliente_usu">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="clientes" Type="Self.clientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="dni_usu" />
+            </Principal>
+            <Dependent Role="clientes">
+              <PropertyRef Name="dni_usu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_res_cli">
+          <End Role="clientes" Type="Self.clientes" Multiplicity="1" />
+          <End Role="reserva" Type="Self.reserva" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientes">
+              <PropertyRef Name="dni_clientes" />
+            </Principal>
+            <Dependent Role="reserva">
+              <PropertyRef Name="dni_clientes" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_detalle_reserva_habitacion">
+          <End Role="habitacion" Type="Self.habitacion" Multiplicity="1" />
+          <End Role="detalle_reserva" Type="Self.detalle_reserva" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="habitacion">
+              <PropertyRef Name="num_habi" />
+            </Principal>
+            <Dependent Role="detalle_reserva">
+              <PropertyRef Name="fk_num_habi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_detalle_reserva_reserva">
+          <End Role="reserva" Type="Self.reserva" Multiplicity="1" />
+          <End Role="detalle_reserva" Type="Self.detalle_reserva" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reserva">
+              <PropertyRef Name="res_id" />
+            </Principal>
+            <Dependent Role="detalle_reserva">
+              <PropertyRef Name="fk_id_reserva" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_habi_piso">
+          <End Role="piso" Type="Self.piso" Multiplicity="1" />
+          <End Role="habitacion" Type="Self.habitacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="piso">
+              <PropertyRef Name="id_piso" />
+            </Principal>
+            <Dependent Role="habitacion">
+              <PropertyRef Name="id_piso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbhotelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categoria_habitacion" EntityType="Self.categoria_habitacion" />
+          <EntitySet Name="clientes" EntityType="Self.clientes" />
+          <EntitySet Name="detalle_reserva" EntityType="Self.detalle_reserva" />
+          <EntitySet Name="habitacion" EntityType="Self.habitacion" />
+          <EntitySet Name="piso" EntityType="Self.piso" />
+          <EntitySet Name="reserva" EntityType="Self.reserva" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" />
+          <AssociationSet Name="fk_habi_cat_habi" Association="Self.fk_habi_cat_habi">
+            <End Role="categoria_habitacion" EntitySet="categoria_habitacion" />
+            <End Role="habitacion" EntitySet="habitacion" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cliente_usu" Association="Self.fk_cliente_usu">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="clientes" EntitySet="clientes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_res_cli" Association="Self.fk_res_cli">
+            <End Role="clientes" EntitySet="clientes" />
+            <End Role="reserva" EntitySet="reserva" />
+          </AssociationSet>
+          <AssociationSet Name="FK_detalle_reserva_habitacion" Association="Self.FK_detalle_reserva_habitacion">
+            <End Role="habitacion" EntitySet="habitacion" />
+            <End Role="detalle_reserva" EntitySet="detalle_reserva" />
+          </AssociationSet>
+          <AssociationSet Name="FK_detalle_reserva_reserva" Association="Self.FK_detalle_reserva_reserva">
+            <End Role="reserva" EntitySet="reserva" />
+            <End Role="detalle_reserva" EntitySet="detalle_reserva" />
+          </AssociationSet>
+          <AssociationSet Name="fk_habi_piso" Association="Self.fk_habi_piso">
+            <End Role="piso" EntitySet="piso" />
+            <End Role="habitacion" EntitySet="habitacion" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbhotelModelStoreContainer" CdmEntityContainer="dbhotelEntities">
+          <EntitySetMapping Name="categoria_habitacion">
+            <EntityTypeMapping TypeName="dbhotelModel.categoria_habitacion">
+              <MappingFragment StoreEntitySet="categoria_habitacion">
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="desc_cat" ColumnName="desc_cat" />
+                <ScalarProperty Name="estado_cat" ColumnName="estado_cat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="clientes">
+            <EntityTypeMapping TypeName="dbhotelModel.clientes">
+              <MappingFragment StoreEntitySet="clientes">
+                <ScalarProperty Name="dni_clientes" ColumnName="dni_clientes" />
+                <ScalarProperty Name="apenom_cli" ColumnName="apenom_cli" />
+                <ScalarProperty Name="edad_cli" ColumnName="edad_cli" />
+                <ScalarProperty Name="dni_usu" ColumnName="dni_usu" />
+                <ScalarProperty Name="estado_cli" ColumnName="estado_cli" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalle_reserva">
+            <EntityTypeMapping TypeName="dbhotelModel.detalle_reserva">
+              <MappingFragment StoreEntitySet="detalle_reserva">
+                <ScalarProperty Name="idDetReserva" ColumnName="idDetReserva" />
+                <ScalarProperty Name="fk_num_habi" ColumnName="fk_num_habi" />
+                <ScalarProperty Name="fk_id_reserva" ColumnName="fk_id_reserva" />
+                <ScalarProperty Name="estado_det" ColumnName="estado_det" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="habitacion">
+            <EntityTypeMapping TypeName="dbhotelModel.habitacion">
+              <MappingFragment StoreEntitySet="habitacion">
+                <ScalarProperty Name="num_habi" ColumnName="num_habi" />
+                <ScalarProperty Name="desc_habi" ColumnName="desc_habi" />
+                <ScalarProperty Name="precio_habi" ColumnName="precio_habi" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="id_piso" ColumnName="id_piso" />
+                <ScalarProperty Name="img_habi" ColumnName="img_habi" />
+                <ScalarProperty Name="estado_habi" ColumnName="estado_habi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="piso">
+            <EntityTypeMapping TypeName="dbhotelModel.piso">
+              <MappingFragment StoreEntitySet="piso">
+                <ScalarProperty Name="id_piso" ColumnName="id_piso" />
+                <ScalarProperty Name="desc_piso" ColumnName="desc_piso" />
+                <ScalarProperty Name="estado_piso" ColumnName="estado_piso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reserva">
+            <EntityTypeMapping TypeName="dbhotelModel.reserva">
+              <MappingFragment StoreEntitySet="reserva">
+                <ScalarProperty Name="res_id" ColumnName="res_id" />
+                <ScalarProperty Name="fecha_ingreso" ColumnName="fecha_ingreso" />
+                <ScalarProperty Name="fecha_salida" ColumnName="fecha_salida" />
+                <ScalarProperty Name="cant_personas" ColumnName="cant_personas" />
+                <ScalarProperty Name="dni_clientes" ColumnName="dni_clientes" />
+                <ScalarProperty Name="estado_pago" ColumnName="estado_pago" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="dbhotelModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="dni_usu" ColumnName="dni_usu" />
+                <ScalarProperty Name="apenom_usu" ColumnName="apenom_usu" />
+                <ScalarProperty Name="password_usu" ColumnName="password_usu" />
+                <ScalarProperty Name="direccion_usu" ColumnName="direccion_usu" />
+                <ScalarProperty Name="estado_usu" ColumnName="estado_usu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

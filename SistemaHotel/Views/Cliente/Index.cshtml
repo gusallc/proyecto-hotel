@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Negocio.Objetos.Cliente>
+
+@{
+    ViewBag.Title = "CLIENTES";
+}
+
+<h2>CLIENTES</h2>
+<p>
+    <button type="button" data-toggle="modal" class="btn btn-primary modalcreate" data-url='@Url.Action("Create","Cliente")'><i class="fas fa-plus"></i> Add New</button>
+</p>
+
+
+<table class="table table-hover table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.dni_clientes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.apenom_cli)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.edad_cli)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dni_usu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.estado_cli)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+    <tr>
+        @{
+            Dominio.MainModule.StateManager statem = new Dominio.MainModule.StateManager();
+            var e = statem.ListaState.ToList().Where(x => x.valor == item.estado_cli).FirstOrDefault();
+            var clase = "";
+            switch (e.valor)
+            {
+                case "0": clase = "class=text-danger"; break;
+                case "1": clase = "class=text-success"; break;
+                default : clase = "class=text-warning"; break;
+            }
+
+       }
+        <td>
+            @Html.DisplayFor(modelItem => item.dni_clientes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.apenom_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.edad_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dni_usu)
+        </td>
+        <td @clase>
+            @e.nombre
+        </td>
+        <td>
+            <button type="button" data-toggle="modal" class="btn btn-secondary modaledit" data-url='@Url.Action("Edit","Cliente", new { id = item.dni_clientes })'><i class="fas fa-edit"></i>Edit</button> |      
+            <a  class="btn btn-danger" href='@Url.Action("Delete","Cliente",new { id = item.dni_clientes })'><i class="fas fa-trash"></i>Delete</a>
+        </td>
+    </tr>
+    }
+
+</table>
+
+<div class="modal fade" id="myModal" role="dialog"  data-backdrop="static" ></div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".modalcreate").click(function () {
+                let url = $(this).data("url");
+                $.get(url, function (data) {
+                    $("#myModal").html(data);
+                    $("#myModal").modal();
+                    });
+            });
+
+            $(".modaledit").click(function () {
+                let url = $(this).data("url");
+                $.get(url, function (data) {
+                    $("#myModal").html(data);
+                    $("#myModal").modal();
+                });
+            });
+
+
+            })
+
+    </script>
+
+}
+

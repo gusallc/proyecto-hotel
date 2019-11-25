@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Negocio.Objetos.Habitacion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.num_habi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.desc_habi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.precio_habi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cat_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.id_piso)
+        </th>
+        <th style="width:15%">
+            @Html.DisplayNameFor(model => model.img_habi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.estado_habi)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        @{
+            Dominio.MainModule.StateManager statem = new Dominio.MainModule.StateManager();
+            var e = statem.ListaState.ToList().Where(x => x.valor == item.estado_habi).FirstOrDefault();
+            var clase = "";
+            switch (e.valor)
+            {
+                case "0": clase = "class=text-danger"; break;
+                case "1": clase = "class=text-success"; break;
+                default: clase = "class=text-warning"; break;
+            }
+
+        }
+        <td>
+            @Html.DisplayFor(modelItem => item.num_habi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.desc_habi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.precio_habi)
+        </td>
+        <td>
+            @{
+                Dominio.MainModule.CategoriaManager cm = new Dominio.MainModule.CategoriaManager();
+                var objH = cm.Find(item.cat_id);
+                <a> @objH.desc_cat</a>
+            }
+        </td>
+        <td>
+            @{
+
+                Dominio.MainModule.PisoManager pm = new Dominio.MainModule.PisoManager();
+                var objP = pm.Find(item.id_piso);
+                <a> @objP.desc_piso </a>
+            }
+        </td>
+        <td>
+            <img class="img-thumbnail" src=" @Html.DisplayFor(modelItem => item.img_habi)" />
+        </td>
+        <td @clase>
+            @e.nombre
+        </td>
+
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.num_habi }) |
+            @Html.ActionLink("Details", "Details", new { id = item.num_habi }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.num_habi })
+        </td>
+    </tr>
+    }
+
+</table>

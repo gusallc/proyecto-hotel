@@ -1,0 +1,58 @@
+﻿@model Negocio.Objetos.Usuario
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Usuario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.dni_usu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dni_usu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.apenom_usu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.apenom_usu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.password_usu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.password_usu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.direccion_usu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.direccion_usu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.estado_usu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.estado_usu)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

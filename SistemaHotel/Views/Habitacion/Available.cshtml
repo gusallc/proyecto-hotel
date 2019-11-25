@@ -1,0 +1,95 @@
+﻿
+
+@model IEnumerable<Negocio.Objetos.Habitacion>
+
+@{
+    ViewBag.Title = "Available";
+
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+
+        Dominio.MainModule.CategoriaManager cm = new Dominio.MainModule.CategoriaManager();
+        var objH = cm.Find(item.cat_id);
+
+        Dominio.MainModule.PisoManager pm = new Dominio.MainModule.PisoManager();
+        var objP = pm.Find(item.id_piso);
+
+        var clase = "btn btn-primary btn-block";
+        var clasefondo = "row";
+
+        <div class="col-sm-6 col-lg-6">
+
+            @if (item.estado_habi == "2")
+            {
+                clase = "btn btn-primary btn-block disabled";
+                clasefondo = "row bg-warning";
+            }
+
+            <div class="@clasefondo" style="padding:5px;background-color: #f8f8f8; margin:0px 0px 20px 0px ;">
+                <div class="col-md-5">
+                    <img class="img-fluid" src="@Html.DisplayFor(modelItem => item.img_habi)">
+                </div>
+                <div class="col-md-7">
+                    <h4>@objH.desc_cat</h4>
+                    <p>@Html.DisplayFor(modelItem => item.desc_habi)</p>
+                    <ul style="list-style-type: none;column-count: 2; margin:0;padding:0">
+                        <li style="margin-bottom: 10px; display: inline-block; width: 100%;"><img src="http://www.ansonika.com/panagea/img/hotel_facilites_icon_2.svg"> @Html.DisplayFor(modelItem => item.num_habi)</li>
+                        <li style="margin-bottom: 10px; display: inline-block; width: 100%;"><i class="fas fa-dollar-sign"></i> @Html.DisplayFor(modelItem => item.precio_habi)</li>
+                        <li style="margin-bottom: 10px; display: inline-block; width: 100%;"><img src="http://www.ansonika.com/panagea/img/hotel_facilites_icon_4.svg" alt="">Free Wifi</li>
+                        <li style="margin-bottom: 10px; display: inline-block; width: 100%;"><img src="http://www.ansonika.com/panagea/img/hotel_facilites_icon_5.svg" alt="">Ducha</li>
+                        <li style="margin-bottom: 10px; display: inline-block; width: 100%;"><i class="fas fa-hotel"></i> @objP.desc_piso</li>
+                    </ul>
+
+
+                    @if (Session["carrito"] != null)
+                    {
+                        foreach (var x in Session["carrito"] as List<Negocio.Objetos.ItemCarrito>)
+                        {
+                            if (x.habitacion.num_habi == item.num_habi)
+                            {
+                                clase = "btn btn-primary btn-block disabled";
+
+                            }
+                        }
+                    }
+                    <p>
+                        <a class="@clase agregar" href="#">Agregar</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+</div>
+
+@section scripts{
+    <script>
+        $(".agregar").click(function (event) {
+            event.preventDefault();
+            let idhabitacion = this.parentElement.parentElement.children[2].children[0].textContent.trim();
+            console.log(idhabitacion.toString());
+                $.ajax({
+                url: "@Url.Action("AgregarCarrito","Home")",
+                data: { id: idhabitacion },
+                type: "POST",
+                    success: function (response) {
+                     window.location.href = "@Url.Action("AgregarCarrito", "Home")";
+                    },
+
+                error: function (xhr, error) {
+                    alert(error);
+                }
+            });
+
+
+        })
+
+
+    </script>
+
+}
