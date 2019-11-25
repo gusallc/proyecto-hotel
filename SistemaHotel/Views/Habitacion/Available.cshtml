@@ -1,12 +1,17 @@
+<<<<<<< HEAD
 ﻿
 
 @model IEnumerable<Negocio.Objetos.Habitacion>
+=======
+﻿@model IEnumerable<Negocio.Objetos.Habitacion>
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
 
 @{
     ViewBag.Title = "Available";
 
 }
 
+<<<<<<< HEAD
 <div class="row">
     @foreach (var item in Model)
     {
@@ -43,6 +48,36 @@
                         <li style="margin-bottom: 10px; display: inline-block; width: 100%;"><i class="fas fa-hotel"></i> @objP.desc_piso</li>
                     </ul>
 
+=======
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="container">
+    <h2>Habitaciones Disponibles </h2>
+    <div class="row row-xl row-30 row-md-50 row-xl-70">
+        @foreach (var item in Model)
+        {
+
+            Dominio.MainModule.CategoriaManager cm = new Dominio.MainModule.CategoriaManager();
+            var objH = cm.Find(item.cat_id);
+
+            Dominio.MainModule.PisoManager pm = new Dominio.MainModule.PisoManager();
+            var objP = pm.Find(item.id_piso);
+
+            var clase = "btn btn-primary";
+            var idhabitacion = @Html.DisplayFor(modelItem => item.num_habi);
+            <div class="col-sm-6 col-lg-2 wow fadeInUp">
+                <div class="imagen">
+                    <img class="img-thumbnail" src="@Html.DisplayFor(modelItem => item.img_habi)" alt="image">
+                </div>
+                <div>
+                    <p hidden>@Html.DisplayFor(modelItem => item.num_habi)</p>
+                    <h2>@Html.DisplayFor(modelItem => item.desc_habi)</h2>
+                    <p>@Html.DisplayFor(modelItem => item.precio_habi)</p>
+                    <p>@Html.DisplayFor(modelItem => item.estado_habi)</p>
+                    <p>@objH.desc_cat</p>
+                    <p>@objP.desc_piso</p>
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
 
                     @if (Session["carrito"] != null)
                     {
@@ -50,7 +85,11 @@
                         {
                             if (x.habitacion.num_habi == item.num_habi)
                             {
+<<<<<<< HEAD
                                 clase = "btn btn-primary btn-block disabled";
+=======
+                                clase = "btn btn-primary disabled";
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
 
                             }
                         }
@@ -60,17 +99,23 @@
                     </p>
                 </div>
             </div>
+<<<<<<< HEAD
         </div>
 
     }
 
 
+=======
+        }
+    </div>
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
 </div>
 
 @section scripts{
     <script>
         $(".agregar").click(function (event) {
             event.preventDefault();
+<<<<<<< HEAD
             let idhabitacion = this.parentElement.parentElement.children[2].children[0].textContent.trim();
             console.log(idhabitacion.toString());
                 $.ajax({
@@ -81,12 +126,25 @@
                      window.location.href = "@Url.Action("AgregarCarrito", "Home")";
                     },
 
+=======
+            let idhabitacion = $(this).parent().parent().find("p:eq(0)").text(); // sale hasta el padre <div> y busca p en la posicion 0
+            $.ajax({
+                url: "@Url.Action("AgregarCarrito","Home")",
+                data: { id: idhabitacion },
+                type: "POST",
+                success: function (response) {
+                    window.location.href = "@Url.Action("AgregarCarrito", "Home")";
+                },
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
                 error: function (xhr, error) {
                     alert(error);
                 }
             });
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
         })
 
 

@@ -14,6 +14,38 @@ namespace Dominio.MainModule
         dbhotelEntities db = new dbhotelEntities();
 
 
+<<<<<<< HEAD
+=======
+        public List<Habitacion> ListAvailable()
+        {
+            try
+            {
+                List<Habitacion> MiLista = new List<Habitacion>();
+                var lista = db.habitacion.Where(x => x.estado_habi == "1").ToList();
+               
+
+                foreach (var item in lista)
+                {
+                    Habitacion h = new Habitacion();
+                    h.num_habi = item.num_habi;
+                    h.desc_habi = item.num_habi;
+                    h.precio_habi = item.precio_habi;
+                    h.cat_id = item.cat_id;
+                    h.id_piso = item.id_piso;
+                    h.img_habi = item.img_habi;
+                    h.estado_habi = item.estado_habi;
+                    MiLista.Add(h);
+                }
+                return MiLista;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
         public List<Habitacion> List() {
             try
             {
@@ -23,7 +55,11 @@ namespace Dominio.MainModule
                 {
                     Habitacion h = new Habitacion();
                     h.num_habi = item.num_habi;
+<<<<<<< HEAD
                     h.desc_habi = item.desc_habi;
+=======
+                    h.desc_habi = item.num_habi;
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
                     h.precio_habi = item.precio_habi;
                     h.cat_id = item.cat_id;
                     h.id_piso = item.id_piso;
@@ -45,7 +81,11 @@ namespace Dominio.MainModule
             {
                 habitacion objH = new habitacion();
                 objH.num_habi = h.num_habi;
+<<<<<<< HEAD
                 objH.desc_habi = h.desc_habi;
+=======
+                objH.desc_habi = h.num_habi;
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
                 objH.precio_habi = h.precio_habi;
                 objH.cat_id = h.cat_id;
                 objH.id_piso = h.id_piso;
@@ -71,7 +111,11 @@ namespace Dominio.MainModule
             {
                 habitacion objH = db.habitacion.Find(id);
                 h.num_habi = objH.num_habi;
+<<<<<<< HEAD
                 h.desc_habi = objH.desc_habi;
+=======
+                h.desc_habi = objH.num_habi;
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
                 h.precio_habi = objH.precio_habi;
                 h.cat_id = objH.cat_id;
                 h.id_piso = objH.id_piso;
@@ -82,7 +126,11 @@ namespace Dominio.MainModule
             catch (Exception e)
             {
 
+<<<<<<< HEAD
                 throw e;
+=======
+                throw e; 
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
             }
             return h;
         }
@@ -93,7 +141,11 @@ namespace Dominio.MainModule
             {   
                 habitacion objH = new habitacion() { 
                    num_habi = h.num_habi,
+<<<<<<< HEAD
                    desc_habi = h.desc_habi,
+=======
+                   desc_habi = h.num_habi,
+>>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
                    precio_habi = h.precio_habi,
                    cat_id = h.cat_id,
                    id_piso = h.id_piso,
