@@ -25,7 +25,7 @@ namespace SistemaHotel.Controllers
                     //si encontramos  un usuario con los datos
                     //cookie percistente
                     FormsAuthentication.SetAuthCookie(usuario.dni_usu, true);
-                    return RedirectToAction("Index", "Usuario");
+                    return RedirectToAction("Available", "Habitacion");
                 }
                 else
                 {
@@ -50,7 +50,7 @@ namespace SistemaHotel.Controllers
             ViewBag.mensaje = mensaje;
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Usuario");
+                return RedirectToAction("Available", "Habitacion");
             }
             return View();
         }

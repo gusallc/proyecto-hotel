@@ -16,12 +16,7 @@ namespace SistemaHotel.Controllers
         CategoriaManager cm = new CategoriaManager();
 
         public ActionResult Available() {
-
-<<<<<<< HEAD
             return View(hm.List());
-=======
-            return View(hm.ListAvailable());
->>>>>>> c88661389b08efab481fc9b1cf98f0022df0696e
         }
 
         // GET: Habitacion
