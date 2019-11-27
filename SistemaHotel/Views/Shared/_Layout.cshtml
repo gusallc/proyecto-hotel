@@ -1,13 +1,12 @@
-﻿
-
-@{
+﻿@{
 int total = 0;
 }
     @if (Session["carrito"] != null)
     {
         foreach (var item in Session["carrito"] as List<Negocio.Objetos.ItemCarrito>)
         {
-            total += (int)(item.habitacion.cat_id);
+
+            total++;
         }
     }
     
