@@ -1,40 +1,40 @@
 ﻿@model IEnumerable<Negocio.Objetos.Habitacion>
-
 @{
-    ViewBag.Title = "Index";
+                /**/
+
+                ViewBag.Title = "Habitacion";
 }
-
-<h2>Index</h2>
-
+<h2>Habitacion</h2>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <button type="button" data-toggle="modal" class="btn btn-primary modalcreate" data-url='@Url.Action("Create","Habitacion")'><i class="fas fa-plus"></i> Add New</button>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.num_habi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.desc_habi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.precio_habi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cat_id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.id_piso)
-        </th>
-        <th style="width:15%">
-            @Html.DisplayNameFor(model => model.img_habi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.estado_habi)
-        </th>
-        <th></th>
-    </tr>
-
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.num_habi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.desc_habi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.precio_habi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.cat_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.id_piso)
+            </th>
+            <th style="width:15%">
+                @Html.DisplayNameFor(model => model.img_habi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.estado_habi)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
     @foreach (var item in Model)
     {
     <tr>
@@ -44,9 +44,9 @@
             var clase = "";
             switch (e.valor)
             {
-                case "0": clase = "class=text-danger"; break;
-                case "1": clase = "class=text-success"; break;
-                default: clase = "class=text-warning"; break;
+                case "0": clase = "badge badge-danger"; break;
+                case "1": clase = "badge badge-success"; break;
+                default: clase = "badge badge-warning"; break;
             }
 
         }
@@ -77,17 +77,50 @@
         <td>
             <img class="img-thumbnail" src=" @Html.DisplayFor(modelItem => item.img_habi)" />
         </td>
-        <td @clase>
-            @e.nombre
-        </td>
-
-
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.num_habi }) |
-            @Html.ActionLink("Details", "Details", new { id = item.num_habi }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.num_habi })
+            <span class="@clase">@e.nombre</span>
+        </td>
+        <td style="width: 12%;">
+            <button type="button" data-toggle="modal" class="btn btn-secondary modaledit" data-url='@Url.Action("Edit","Habitacion", new { id = item.num_habi})'>
+                <i class="fas fa-edit"></i>
+            </button>
+            <a class="btn btn-danger" href='#' onclick="Confirmar(@item.num_habi)"><i class="fas fa-trash"></i></a>
         </td>
     </tr>
     }
-
 </table>
+<div class="modal fade" id="myModal" role="dialog" data-backdrop="static"></div>
+
+@section scripts{
+    <script type="text/javascript">
+    $(document).ready(function () {
+            $(".modalcreate").click(function () {
+                let url = $(this).data("url");
+                $.get(url, function (data) {
+                    $("#myModal").html(data);
+                    $("#myModal").modal();
+                });
+            });
+
+            $(".modaledit").click(function () {
+                let url = $(this).data("url");
+                $.get(url, function (data) {
+                    $("#myModal").html(data);
+                    $("#myModal").modal();
+                });
+            });
+        function Confirmar(id) {
+            if (confirm("¿Seguro que desea eliminar el registro con ID: " + id + "?")) {
+                location.href = "/Cliente/Delete/" + id;
+            }
+        }
+        })
+
+        function Confirmar(id) {
+            if (confirm("¿Seguro que desea eliminar el registro con ID: " + id + "?")) {
+                location.href = "/Habitacion/Delete/" + id;
+            }
+        }
+
+    </script>
+}

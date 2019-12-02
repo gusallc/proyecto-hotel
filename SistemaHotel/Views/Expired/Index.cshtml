@@ -1,0 +1,77 @@
+﻿@model  IPagedList<Negocio.Objetos.Expired>
+
+@{
+    ViewBag.Title = "REPORTE";
+}
+@using PagedList.Mvc;
+@using PagedList;
+<h2>REPORTE</h2>
+
+<p>
+    @using (Html.BeginForm("Index", "Expired", FormMethod.Get, new { @class = "form-inline" }))
+    {   
+        <div class="form-group mb-2">
+            <label class="control-label col-md-2">DNI: </label>
+            <input type="text" class="form-control" name="search" placeholder="Ingrese DNI" />
+        </div>
+            <input type="submit" class="btn btn-primary mb-2" name="submit" value="Buscar" />
+            }
+    </p>
+
+
+@{
+    DateTime fecha = DateTime.Now.Date;
+    var clase = "";
+}
+
+<table class="table" id="tablefecha">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().res_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().fecha_ingreso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().fecha_salida)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().dni_clientes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().fk_num_habi)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.fecha_salida == fecha)
+        {
+            clase = "bg-warning";
+        }
+        else
+        {
+            clase = "";
+        }
+        <tr class=@clase>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.res_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_ingreso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_salida)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dni_clientes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fk_num_habi)
+            </td>
+        </tr>
+
+    }
+</table>
+@Html.PagedListPager(Model, i => Url.Action("Index", "Expired", new { i, search = Request.QueryString["search"] }))

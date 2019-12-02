@@ -11,6 +11,7 @@ namespace SistemaHotel
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery-{version}.min.js",
+                        "~/Scripts/push.min.js",
                         "~/Scripts/moment.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -38,6 +39,7 @@ namespace SistemaHotel
                       "~/Content/bootstrap-reboot.min.css",
                       "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/resume.css",
+                      "~/Content/PagedList.css",
                       "~/Content/site.css"));
         }
     }

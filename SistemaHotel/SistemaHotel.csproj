@@ -54,6 +54,12 @@
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -157,6 +163,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\ExpiredController.cs" />
     <Compile Include="Controllers\HabitacionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PisoController.cs" />
@@ -177,7 +184,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\creditcard.png" />
-    <Content Include="Content\img\profile.jpg" />
+    <Content Include="Content\img\information.png" />
+    <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\img\logo.png" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\resume.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -307,6 +317,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\push.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -347,7 +358,6 @@
     <Content Include="Views\Habitacion\Details.cshtml" />
     <Content Include="Views\Habitacion\Create.cshtml" />
     <Content Include="Views\Habitacion\Edit.cshtml" />
-    <Content Include="Views\Habitacion\Delete.cshtml" />
     <Content Include="Views\Home\AgregarCarrito.cshtml" />
     <Content Include="Views\Habitacion\Available.cshtml" />
     <Content Include="Views\Cliente\Index.cshtml" />
@@ -365,6 +375,9 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\ConfirmReserva.cshtml" />
+    <Content Include="Views\Home\Push.cshtml" />
+    <Content Include="Views\Expired\Index.cshtml" />
+    <Content Include="Views\Habitacion\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -37,7 +37,7 @@ namespace SistemaHotel.Controllers
         // GET: Piso/Create
         public ActionResult Create()
         {
-            ViewBag.estado_piso = new SelectList(sm.ListaState, "valor", "nombre");
+            ViewBag.estado_piso = new SelectList(sm.ListaState2, "valor", "nombre");
             return PartialView();
         }
 
@@ -47,7 +47,7 @@ namespace SistemaHotel.Controllers
         {
           
                 if (!ModelState.IsValid) {
-                ViewBag.estado_piso = new SelectList(sm.ListaState, "valor", "nombre");
+                ViewBag.estado_piso = new SelectList(sm.ListaState2, "valor", "nombre");
                 return PartialView(p);
                 }
                 pm.Insert(p);
@@ -58,7 +58,7 @@ namespace SistemaHotel.Controllers
         public ActionResult Edit(int id)
         {
             Piso p = pm.Find(id);
-            ViewBag.estado_piso = new SelectList(sm.ListaState, "valor", "nombre",p.estado_piso);
+            ViewBag.estado_piso = new SelectList(sm.ListaState2, "valor", "nombre",p.estado_piso);
             return PartialView(p);
         }
 
@@ -76,7 +76,7 @@ namespace SistemaHotel.Controllers
             }
             catch
             {
-                ViewBag.estado_piso = new SelectList(sm.ListaState, "valor", "nombre", p.estado_piso);
+                ViewBag.estado_piso = new SelectList(sm.ListaState2, "valor", "nombre", p.estado_piso);
                 return PartialView(p);
             }
         }

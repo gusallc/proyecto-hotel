@@ -45,6 +45,7 @@
     <Compile Include="Categoria.cs" />
     <Compile Include="Cliente.cs" />
     <Compile Include="DetalleReserva.cs" />
+    <Compile Include="Expired.cs" />
     <Compile Include="Habitacion.cs" />
     <Compile Include="ItemCarrito.cs" />
     <Compile Include="Piso.cs" />

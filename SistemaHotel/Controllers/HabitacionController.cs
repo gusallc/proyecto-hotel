@@ -14,6 +14,7 @@ namespace SistemaHotel.Controllers
         HabitacionManager hm = new HabitacionManager();
         PisoManager pm = new PisoManager();
         CategoriaManager cm = new CategoriaManager();
+        StateManager sm = new StateManager();
 
         public ActionResult Available() {
             return View(hm.List());
@@ -46,6 +47,7 @@ namespace SistemaHotel.Controllers
         {
             ViewBag.cat_id = new SelectList(cm.List(), "cat_id", "desc_cat");
             ViewBag.id_piso = new SelectList(pm.List(), "id_piso", "desc_piso");
+            ViewBag.estado_habi = new SelectList(sm.ListaState, "valor", "nombre");
             return PartialView();
         }
 
@@ -56,6 +58,7 @@ namespace SistemaHotel.Controllers
             if (!ModelState.IsValid) {
                 ViewBag.cat_id = new SelectList(cm.List(), "cat_id", "desc_cat");
                 ViewBag.id_piso = new SelectList(pm.List(), "id_piso", "desc_piso");
+                ViewBag.estado_habi = new SelectList(sm.ListaState, "valor", "nombre");
                 return PartialView(h);
             }
             hm.Insert(h);
@@ -69,6 +72,7 @@ namespace SistemaHotel.Controllers
             Habitacion h = hm.Find(id);
             ViewBag.cat_id = new SelectList(cm.List(), "cat_id", "desc_cat", h.cat_id);
             ViewBag.id_piso = new SelectList(pm.List(), "id_piso", "desc_piso", h.id_piso);
+            ViewBag.estado_habi = new SelectList(sm.ListaState, "valor", "nombre",h.estado_habi);
             return PartialView(h);
         }
 
@@ -81,6 +85,7 @@ namespace SistemaHotel.Controllers
                 if (!ModelState.IsValid) {
                     ViewBag.cat_id = new SelectList(cm.List(), "cat_id", "desc_cat", h.cat_id);
                     ViewBag.id_piso = new SelectList(pm.List(), "id_piso", "desc_piso", h.id_piso);
+                    ViewBag.estado_habi = new SelectList(sm.ListaState, "valor", "nombre", h.estado_habi);
                     return PartialView(h);
                 }
                 hm.Update(h);
@@ -91,21 +96,6 @@ namespace SistemaHotel.Controllers
                 return View();
             }
         }
-
-        /* GET: Habitacion/Delete/5
-        public ActionResult Delete(String id)
-        {
-            if (id.ToString() == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Habitacion h = hm.Find(id);
-            if (h == null)
-            {
-                return HttpNotFound();
-            }
-            return View(h);
-        }*/
         public ActionResult Delete(String id)
         {
             try
@@ -118,5 +108,6 @@ namespace SistemaHotel.Controllers
                 return View();
             }
         }
+        
     }
 }

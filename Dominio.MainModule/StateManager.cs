@@ -13,5 +13,10 @@ namespace Dominio.MainModule
         new State{ nombre="ACTIVO",valor="1"},
         new State{ nombre="RESERVADO",valor="2"}
         };
+
+        public List<State> ListaState2 = new List<State>() {
+        new State{ nombre="INACTIVO",valor="0"},
+        new State{ nombre="ACTIVO",valor="1"}
+        };
     }
 }

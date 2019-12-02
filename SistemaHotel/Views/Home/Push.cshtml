@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Push</title>
+    <script src="~/Scripts/push.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1>Holi </h1>
+    </div>
+
+    <script>
+        Push.create("Hola Mundo");
+
+    </script>
+
+</body>
+</html>
+
+@section scripts{
+    <script>
+        Push.create("Hola Mundo");
+    </script>
+}

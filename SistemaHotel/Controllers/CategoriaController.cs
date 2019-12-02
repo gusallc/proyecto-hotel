@@ -39,7 +39,7 @@ namespace SistemaHotel.Controllers
         // GET: Categoria/Create
         public ActionResult Create()
         {
-            ViewBag.estado_cat = new SelectList(sm.ListaState, "valor", "nombre");
+            ViewBag.estado_cat = new SelectList(sm.ListaState2, "valor", "nombre");
             return PartialView();
         }
 
@@ -49,7 +49,7 @@ namespace SistemaHotel.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.estado_cat = new SelectList(sm.ListaState, "valor", "nombre");
+                ViewBag.estado_cat = new SelectList(sm.ListaState2, "valor", "nombre");
                 return PartialView(c);
             }
             CC.Insert(c);
@@ -65,7 +65,7 @@ namespace SistemaHotel.Controllers
             }
          
             Categoria c = CC.Find(id);
-            ViewBag.estado_cat = new SelectList(sm.ListaState, "valor", "nombre",c.estado_cat);
+            ViewBag.estado_cat = new SelectList(sm.ListaState2, "valor", "nombre",c.estado_cat);
             if (c == null)
             {
 

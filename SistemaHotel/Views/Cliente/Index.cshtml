@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<Negocio.Objetos.Cliente>
-
 @{
     ViewBag.Title = "CLIENTES";
 }
@@ -40,12 +39,12 @@
             var clase = "";
             switch (e.valor)
             {
-                case "0": clase = "class=text-danger"; break;
-                case "1": clase = "class=text-success"; break;
-                default : clase = "class=text-warning"; break;
+                case "0": clase = "badge badge-danger"; break;
+                case "1": clase = "badge badge-success"; break;
+                default: clase = "badge badge-warning"; break;
             }
 
-       }
+        }
         <td>
             @Html.DisplayFor(modelItem => item.dni_clientes)
         </td>
@@ -58,12 +57,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.dni_usu)
         </td>
-        <td @clase>
-            @e.nombre
+        <td>
+            <span class="@clase">@e.nombre</span>
         </td>
         <td>
-            <button type="button" data-toggle="modal" class="btn btn-secondary modaledit" data-url='@Url.Action("Edit","Cliente", new { id = item.dni_clientes })'><i class="fas fa-edit"></i>Edit</button> |      
-            <a  class="btn btn-danger" href='@Url.Action("Delete","Cliente",new { id = item.dni_clientes })'><i class="fas fa-trash"></i>Delete</a>
+            <button type="button" data-toggle="modal" class="btn btn-secondary modaledit" data-url='@Url.Action("Edit","Cliente", new { id = item.dni_clientes })'><i class="fas fa-edit"></i>Edit</button> |
+            <a class="btn btn-danger" href='#' onclick="Confirmar(@item.dni_clientes)"><i class="fas fa-trash"></i>Delete</a>
         </td>
     </tr>
     }
@@ -91,7 +90,12 @@
             });
 
 
-            })
+        })
+        function Confirmar(id) {
+            if (confirm("¿Seguro que desea eliminar el registro con ID: " + id + "?")) {
+                location.href = "/Cliente/Delete/" + id;
+            }
+        }
 
     </script>
 

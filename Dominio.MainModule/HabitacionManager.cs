@@ -95,7 +95,6 @@ namespace Dominio.MainModule
                 habitacion objH = new habitacion() { 
                    num_habi = h.num_habi,
                    desc_habi = h.desc_habi,
-
                    precio_habi = h.precio_habi,
                    cat_id = h.cat_id,
                    id_piso = h.id_piso,
@@ -118,6 +117,7 @@ namespace Dominio.MainModule
                 habitacion objH = db.habitacion.Find(id);
                 db.habitacion.Remove(objH);
                 db.SaveChanges();
+                
             }
             catch (Exception e)
             {
@@ -136,10 +136,10 @@ namespace Dominio.MainModule
             }
             catch (Exception e)
             {
-
                 throw e;
             }
         }
+
 
     }
 }

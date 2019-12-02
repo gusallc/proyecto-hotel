@@ -14,3 +14,4 @@ namespace Negocio.Objetos
         public int estado_det { get; set; }
     }
 }
+

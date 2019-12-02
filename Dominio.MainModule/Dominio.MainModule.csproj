@@ -53,6 +53,7 @@
     <Compile Include="CategoriaManager.cs" />
     <Compile Include="ClienteManager.cs" />
     <Compile Include="DetalleReservaManager.cs" />
+    <Compile Include="ExpiredManager.cs" />
     <Compile Include="HabitacionManager.cs" />
     <Compile Include="PisoManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

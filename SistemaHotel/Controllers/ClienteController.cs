@@ -41,7 +41,7 @@ namespace SistemaHotel.Controllers
         // GET: Cliente/Create
         public ActionResult Create()
         {
-            ViewBag.estado_cli = new SelectList(sm.ListaState, "valor", "nombre");
+            ViewBag.estado_cli = new SelectList(sm.ListaState2, "valor", "nombre");
             ViewBag.dni_usu = new SelectList(uc.List(), "dni_usu", "apenom_usu");
             return PartialView();
         }
@@ -63,7 +63,7 @@ namespace SistemaHotel.Controllers
         public ActionResult Edit(String id)
         {
             Cliente c = cc.Find(id);
-            ViewBag.estado_cli = new SelectList(sm.ListaState, "valor", "nombre",c.estado_cli);
+            ViewBag.estado_cli = new SelectList(sm.ListaState2, "valor", "nombre",c.estado_cli);
             ViewBag.dni_usu = new SelectList(uc.List(), "dni_usu", "apenom_usu",c.dni_usu);
             return PartialView(c);
         }
@@ -76,7 +76,7 @@ namespace SistemaHotel.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    ViewBag.estado_cli = new SelectList(sm.ListaState, "valor", "nombre", c.estado_cli);
+                    ViewBag.estado_cli = new SelectList(sm.ListaState2, "valor", "nombre", c.estado_cli);
                     ViewBag.dni_usu = new SelectList(uc.List(), "dni_usu", "apenom_usu", c.dni_usu);
                     return PartialView(c);
                 }

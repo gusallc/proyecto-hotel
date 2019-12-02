@@ -20,11 +20,21 @@
     .credit-card-div .pad-adjust {
         padding-top: 10px;
     }
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../../Content/img/loading.gif') 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
 </style>
 
-<div class="toast" style="float:right">
-</div>
-<h2>Carrito de Compras</h2>
+<div id="cargar"></div>
+
+<h2>Registro de Reserva</h2>
 <div class="container">
 
     <div class="row">
@@ -54,7 +64,7 @@
                 <div class="input-group-prepend">
                     <div class="input-group-text"><i class="fas fa-users"></i></div>
                 </div>
-                <input class="form-control text-box single-line" type="number" id="personas" required/>
+                <input class="form-control text-box single-line" type="number" id="personas" min="1" required />
             </div>
         </div>
 
@@ -81,7 +91,7 @@
         </thead>
         <tbody>
             @{
-                double total = 0;
+                double precio = 0;
                 string valueestado = "0";
             }
             @if (Session["carrito"] != null)
@@ -89,9 +99,10 @@
                 foreach (var item in Session["carrito"] as List<Negocio.Objetos.ItemCarrito>)
                 {
 
-                    total += (double)(item.habitacion.precio_habi);
-                    if (total != 0) {
-                       valueestado = "2";
+                    precio += (double)(item.habitacion.precio_habi);
+                    if (precio != 0)
+                    {
+                        valueestado = "2";
                     }
                     <tr>
                         <td>@item.habitacion.num_habi</td>
@@ -119,8 +130,12 @@
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="4">Total</th>
-                <th class="text-right">@String.Format("{0:C}", total)</th>
+                <th colspan="4" class="text-right">Noches:</th>
+                <th class="text-right" id="noche"></th>
+            </tr>
+            <tr>
+                <th colspan="4" class="text-right">Total: </th>
+                <th class="text-right" id="total">@String.Format("{0:C}", precio)</th>
             </tr>
             <tr>
                 <th colspan="3">
@@ -139,7 +154,7 @@
 <input class="form-control text-box single-line" type="number" hidden value=@valueestado id="estadopago" required />
 
 
-
+<!----------------    MODALS TARJETA DE CREDITO --------------------->
 <div class="modal fade" id="modalCard" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -156,7 +171,7 @@
 
                             <div class="row ">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" id="cardNumber" placeholder="Enter Card Number" />
+                                    <input type="number" class="form-control" id="cardNumber" min="8" max="15"placeholder="Enter Card Number" />
                                 </div>
                             </div>
                             <div class="row ">
@@ -173,7 +188,7 @@
                                     <input type="text" class="form-control" id="cardCCV" placeholder="CCV" />
                                 </div>
                                 <div class="col-md-3 col-sm-3 col-xs-2">
-                                    <img src="~/Content/img/creditcard.png" style="width: 60%; margin-top: 14%; padding: 0px;" />
+                                    <img src="/Content/img/creditcard.png" style="width: 60%; margin-top: 14%; padding: 0px;" />
                                 </div>
                             </div>
                             <div class="row ">
@@ -206,7 +221,44 @@
 
 @section scripts{
     <script>
+
+
+
         let e = $("#estadopago").val();
+        let total= 0;
+        $("#fechafin").datetimepicker({}).on("dp.change", function () {
+            let fi = new Date($("#fechaini").val().trim());
+            let ff = new Date($("#fechafin").val().trim());
+            if (fi != "" && ff != "") {
+                let dif = ff - fi
+                let totalnoches = Math.floor(dif / (1000 * 60 * 60 * 24));
+                $("#noche").html(totalnoches);
+                total = @precio * totalnoches;
+                $("#total").html("S/ " + total.toFixed(2))
+                total == NaN ? $("#total").html("S/ 0.00") : $("#total").html("S/ " + total.toFixed(2));
+            } else {
+                $("#total").html("S/ " + @precio)
+            }
+        });
+        $("#fechaini").datetimepicker({}).on("dp.change", function () {
+            let fi = new Date($("#fechaini").val().trim());
+            let ff = new Date($("#fechafin").val().trim());
+            if (fi != "" && ff != "") {
+                let dif = ff - fi
+                let totalnoches = Math.floor(dif / (1000 * 60 * 60 * 24));
+                $("#noche").html(totalnoches);
+                total = @precio * totalnoches;
+                total == NaN ? $("#total").html("S/ 0.00") : $("#total").html("S/ " + total.toFixed(2));
+             } else {
+                $("#total").html("S/ " + @precio)
+            }
+        });
+
+
+
+
+
+
         $("#efectivo").click(function (event) {
             event.preventDefault();
             let a = $("#fechaini").val().trim();
@@ -217,16 +269,14 @@
                 alert("El ingreso está vacio");
             } else if (b == "") {
                 alert("La salida está vacio");
-            } else if (c == "") {
-                alert("Cantidad de personas está vacio");
+            } else if (c == "" || c < 1 || c % 1 != 0)  {
+                alert("La cantidad de personas es incorrecta");
             } else if (d == "") {
                 alert("Ingrese un cliente");
+            } else if (total < 0 || total == 0)  {
+                alert("Por favor verifique las Fechas - Ingreso y Salida");
             } else {
                     if (e == "2") {
-                         //$("#modalCard").modal({ backdrop: false });
-                       // $('.toast').html(` <div class="toast-body alert-danger">
-                       //                  <strong>NO SE HA REALIZADO EL PAGO!!</strong>
-                        //                  </div>`).toast('show');
                          $.ajax({
                            url: "@Url.Action("ConfirmReserva", "Home")",
                            data: { fecha_ingreso: a, fecha_salida: b, cant_personas: c, dni_clientes: d,estado_pago:e },
@@ -259,16 +309,20 @@
                 alert("El ingreso está vacio");
             } else if (b == "") {
                 alert("La salida está vacio");
-            } else if (c == "") {
-                alert("Cantidad de personas está vacio");
+            } else if (c == "" || c < 1 || c % 1 != 0) {
+                alert("La cantidad de personas es incorrecta");
             } else if (d == "") {
                 alert("Ingrese un cliente");
+
+            } else if (total < 0 || total ==0) {
+                alert("Por favor verifique las Fechas - Ingreso y Salida");
             } else {
-                     if (e == "2") {
+                if (e == "2") {
                         $("#modalCard").modal();
                         $("#formCard").click(function (event) {
                             event.preventDefault();
                             if ($("#cardNumber").val().length > 7) {
+                                $("#cargar").addClass("loader");
                                 $.ajax({
                                     url: "https://lookup.binlist.net/" + $("#cardNumber").val(),
                                     type: "GET",
@@ -286,18 +340,21 @@
                                                 data: { fecha_ingreso: a, fecha_salida: b, cant_personas: c, dni_clientes: d, estado_pago: $("#estadopago").val() },
                                                 type: "POST",
                                                 success: function (response) {
+                                                    $("#cargar").removeClass("loader");
                                                     window.location.href = "@Url.Action("ConfirmReserva", "Home")";
                                                 },
                                                 error: function (xhr, error) {
+                                                    $("#cargar").removeClass("loader");
                                                     alert(error);
                                                 }
                                             });
                                         }
-
+                                        $("#cargar").removeClass("loader");
                                     },
                                     error: function (xhr, error) {
+                                        $("#cargar").removeClass("loader");
                                         $("#cardNumber").val("");
-                                        alert(error + "Tarjeta no Existe");
+                                        alert(error + "  Tarjeta no Existe");
                                     }
                                 });
 
@@ -308,7 +365,7 @@
                         });
                     } else {
                         alert("No existe ninguna habitación reservada")
-                
+
                     }
 
                    }

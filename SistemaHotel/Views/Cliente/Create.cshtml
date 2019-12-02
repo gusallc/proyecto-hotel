@@ -9,6 +9,20 @@
 
     @Scripts.Render("~/bundles/jqueryval")
 </head>
+<style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../../Content/img/loading.gif') 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+</style>
+<div id="cargar"></div>
+
 @using (Html.BeginForm())
 {
     <body>
@@ -27,11 +41,11 @@
                 <div class="modal-body">
 
 
-                    @Html.AntiForgeryToken()
-                    <div class="form-horizontal">
+                    @Html.AntiForgeryToken() 
+                    <div class="form-horizontal" >
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
-                            @Html.LabelFor(model => model.dni_clientes, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.dni_clientes, htmlAttributes: new { @class = "control-label col-md" })
                             <div class="col-md-10 input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -45,7 +59,7 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.apenom_cli, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.apenom_cli, htmlAttributes: new { @class = "control-label col-md" })
                             <div class="col-md-10 input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -56,7 +70,7 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.edad_cli, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.edad_cli, htmlAttributes: new { @class = "control-label col-md" })
                             <div class="col-md-10 input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -67,7 +81,7 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.dni_usu, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.dni_usu, htmlAttributes: new { @class = "control-label col-md" })
                             <div class="col-md-10 input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -78,7 +92,7 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.estado_cli, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.estado_cli, htmlAttributes: new { @class = "control-label col-md" })
                             <div class="col-md-10 input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -104,12 +118,14 @@
                             if (dni.length <= 7 || dni.length>=9) {
                                 alert("El campo DNI esta vacio o no contiene 8 digitos");
                             } else {
+                                $("#cargar").addClass("loader");
                                 // var dni=document.getElementById("etDni").value;
                                 fetch('https://apiresfull.000webhostapp.com/apiessalud.php?dni=' + dni)
-                                        .then(function (response) {
+                                    .then(function (response) {
                                             return response.json();
                                         })
-                                        .then(function (data) {
+                                    .then(function (data) {
+                                            $("#cargar").removeClass("loader");
                                             var date = new Date();
                                             var nacimiento = data.DatosPerson[0].FechaNacimiento;
                                             var dateParts = nacimiento.split("/");
@@ -120,6 +136,7 @@
                                             $("#edad_cli").attr("value", edadactual);
                                         }).catch(function (err) {
                                             alert('fetch failed! ', err);
+                                            $("#cargar").removeClass("loader");
                                         });
 
                             }
